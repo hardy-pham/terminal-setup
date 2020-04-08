@@ -1,0 +1,96 @@
+export GOPATH=$HOME/go
+
+alias vim='/usr/local/Cellar/vim/8.2.0450/bin/vim'
+alias rollback='kubectl rollout history deployment.v1.apps/regional-compute -n rias'
+
+alias softlayer.stg='ssh harpham@stagingdal0101.softlayer.local'
+alias lsync='sudo lsyncd -nodaemon /usr/local/etc/lsyncd.cfg'
+alias softlayer.vpn='sudo openconnect -u harpham ibm.remote.softlayer.com'
+alias cdroot='cd "$(git rev-parse --show-cdup)"'
+
+# Git aliases
+alias gs='git status'
+
+# NG Aliases
+alias mrcd='make regional-compute docker'
+alias kgprc='kubectl get pods -n rias -l app=regional-compute'
+alias kdprc='kubectl delete pod -n rias -l app=regional-compute'
+alias ngminikube='minikube start --insecure-registry="9.41.33.175,marina.eden.cloudlab.austin.ibm.com"'
+alias gsu='git submodule update --init --recursive'
+alias k='kubectl'
+alias kgp='kubectl get pods'
+
+alias login_production='ibmcloud login -a https://cloud.ibm.com -r us-south --sso --apikey @~/.jason-merchant-prod-api-key'
+alias perf01='ibmcloud iam oauth-tokens && ibmcloud cs cluster-config rias-genesis-dal13-perf01 && export KUBECONFIG=/Users/hardy/.bluemix/plugins/container-service/clusters/rias-genesis-dal13-perf01/kube-config-dal13-rias-genesis-dal13-perf01.yml'
+alias login_staging='ibmcloud login -a https://test.cloud.ibm.com -r us-south --sso --apikey @~/.hardy-pham-staging-api-key'
+alias mzone7184='ibmcloud cs cluster-config rias-genesis-dal10-dev01 && export KUBECONFIG=/Users/hardy/.bluemix/plugins/container-service/clusters/rias-genesis-dal10-dev01/kube-config-dal10-rias-genesis-dal10-dev01.yml'
+
+# NG Scripting Aliases
+## Refresh Rias Exports
+alias riase='source /usr/local/bin/riasExports && all' #riase -> rias exports (All)
+alias updatetoken='source /usr/local/bin/riasExports && token' #gettoken -> refresh token
+alias updateendpoint_minikube='source /usr/local/bin/riasExports && api_minikube' #getapi -> refresh api
+alias updateendpoint_perf01='source /usr/local/bin/riasExports && api_perf01'
+
+# Powerline
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+source /usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh
+
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+# show path before the $ prompt
+export PS1='\u@\H:\w$ '
+
+# Git branch in prompt.
+
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+cdls() { cd "$@" && ls; }
+
+eval "$(direnv hook bash)"
+
+# Fuzzy Finder
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+bind '"\C-g": " \C-e\C-u`__fzf_cd__`\e\C-e\er\C-m"'
+
+# prints src/<git repo path>
+function workdir(){
+    REPOURL="$(git config --get remote.origin.url)"
+    if [[ $REPOURL == *"-workspace.git" ]]; then
+        REPO="$(echo $REPOURL | pcregrep -o1 'https:\/\/(.*)-workspace.git')"
+    else
+        REPO="$(echo $REPOURL | pcregrep -o1 'https:\/\/(.*).git')"
+    fi
+    REPOPATH="$(git rev-parse --show-toplevel)/src/$REPO"
+    echo "$REPOPATH"
+}
+
+# switches to src/<git repo path>
+function work(){
+    cd "$(workdir)"
+}
+
+# switches to root dir of git repo
+function groot(){
+    cd "$(grootdir)"
+}
+
+# prints root dir of git repo
+function grootdir(){
+    echo "$(git rev-parse --show-toplevel)"
+}
+
+# moves from submodule to root of git repo
+function up(){
+    groot
+    cd ..
+    groot
+}
