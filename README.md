@@ -6,6 +6,7 @@
 https://medium.com/@KentaKodashima/customize-your-terminal-prompt-with-powerline-ed6eb884fabb
 
 Note: when installing powerline with pip, be sure to direct the installation to /usr/local
+
 `sudo pip install --prefix /usr/local powerline-status`
 
 ## Install powerline fonts
@@ -20,5 +21,5 @@ https://draculatheme.com/iterm
 brew install fzf
 
 ## Update vimrc and bash profile
-Update vimrc and bash_profile with the files in this repo
+Update vimrc and bash profile with the files in this repo
 
