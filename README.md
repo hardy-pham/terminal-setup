@@ -1,32 +1,35 @@
 # Terminal setup
 
 ## Install iTerm2
+https://iterm2.com/downloads.html
 
-## Install powerline-status
-https://medium.com/@KentaKodashima/customize-your-terminal-prompt-with-powerline-ed6eb884fabb
+## Rose Pine Color Scheme
 
-Note: when installing powerline with pip, be sure to direct the installation to /usr/local
+1. Clone the Rose Pine iTerm color scheme repo:
+   ```bash
+   git clone https://github.com/rose-pine/iterm
+   ```
 
-`sudo pip install --prefix /usr/local powerline-status`
+2. Open iTerm2.
+3.	Navigate to:
+    iTerm2 > Settings > Profiles > Colors
+4.	Under Color Presets, click Import....
+5.	Select the rose-pine.itermcolors file from the cloned repo.
+6.	After importing, choose the rose-pine preset from the Color Presets dropdown.
 
-## Install powerline fonts
-https://github.com/powerline/fonts
+## Install Pure Prompt (for Zsh)
+> A minimal, fast, and pretty Zsh prompt.
 
-Use Meslo LG S for Powerline for both ASCII and non-ASCII fonts
-
-## Update powerline config to get VCS branch on the powerline
-Reference this link: https://powerline.readthedocs.io/en/latest/configuration.html
-
-Create a config file in `~/.config/powerline` with the changes based on the config files where you installed powerline
-
-Set the theme for shell to `default_leftonly`
-
-## Install Dracula theme for the term
-https://draculatheme.com/iterm
+1.	Install Pure using npm:
+    ```bash
+    npm install --global pure-prompt
+    ```
+2. Enable the prompt in your shell:
+    ```bash
+    autoload -U promptinit; promptinit
+    prompt pure
+    ```
+    > Add these commands to your ~/.zshrc
 
 ## Install fzf
 brew install fzf
-
-## Update vimrc and bash profile
-Update vimrc and bash profile with the files in this repo
-
